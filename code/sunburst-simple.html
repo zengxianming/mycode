@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+   </head>
+   <body style="height: 100%; margin: 0">
+       <div id="container" style="height: 100%"></div>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+       <script type="text/javascript">
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+var data = [{
+    name: 'Grandpa',
+    children: [{
+        name: 'Uncle Leo',
+        value: 15,
+        children: [{
+            name: 'Cousin Jack',
+            value: 2
+        }, {
+            name: 'Cousin Mary',
+            value: 5,
+            children: [{
+                name: 'Jackson',
+                value: 2
+            }]
+        }, {
+            name: 'Cousin Ben',
+            value: 4
+        }]
+    }, {
+        name: 'Father',
+        value: 10,
+        children: [{
+            name: 'Me',
+            value: 5
+        }, {
+            name: 'Brother Peter',
+            value: 1
+        }]
+    }]
+}, {
+    name: 'Nancy',
+    children: [{
+        name: 'Uncle Nike',
+        children: [{
+            name: 'Cousin Betty',
+            value: 1
+        }, {
+            name: 'Cousin Jenny',
+            value: 2
+        }]
+    }]
+}];
+
+option = {
+    series: {
+        type: 'sunburst',
+        // highlightPolicy: 'ancestor',
+        data: data,
+        radius: [0, '90%'],
+        label: {
+            rotate: 'radial'
+        }
+    }
+};
+;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+   </body>
+</html>
