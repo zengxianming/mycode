@@ -46,6 +46,7 @@ sns.set()
 
 
 def find_path(df, name):
+    error_log = ''
     Dic = {'start_index': [], 'end_index': [], 'date': [], 'start_time': [], 'start_lid': [], 'end_time': [],
            'end_lid': [], 'caoyang': []}
     dates = df.rdate.unique()
@@ -94,6 +95,10 @@ def find_path(df, name):
                         print("_________something wrong in start!______")
                         print(m.loc[dic[key][0]])
                         print("________________________________________")
+                        error_log = error_log + '_________something wrong in start!______\n'
+                        error_log = error_log + 'chepai: {}\n'.format(name[0:-4])
+                        error_log = error_log + str(m.loc[dic[key][0]]) + '\n'
+                        error_log = error_log + '________________________________________\n'
                         break
             while 1:
                 if m.loc[end_index].speed == 0 and m.loc[end_index].LID in [1, 2, 3]:
@@ -108,25 +113,31 @@ def find_path(df, name):
                         print("_________something wrong in end!______")
                         print(m.loc[dic[key][0]])
                         print("______________________________________")
+                        error_log = error_log + '_________something wrong in end!______\n'
+                        error_log = error_log + 'chepai: {}\n'.format(name[0:-4])
+                        error_log = error_log + str(m.loc[dic[key][-1]]) + '\n'
+                        error_log = error_log + '________________________________________\n'
                         break
             caoyang = 1 if 4 in m.loc[start_index:end_index].LID.unique() else 0
-            Dic['start_index'].append(start_index)
-            Dic['end_index'].append(end_index)
+            Dic['start_index'].append(m.loc[dic[key][0]]['index'])
+            Dic['end_index'].append(m.loc[dic[key][-1]]['index'])
             Dic['date'].append(date)
             Dic['start_time'].append(start_time)
             Dic['start_lid'].append(start_lid)
             Dic['end_time'].append(end_time)
             Dic['end_lid'].append(end_lid)
             Dic['caoyang'].append(caoyang)
-    return Dic
+    return Dic, error_log
 
 
-new_path = 'C:\\Users\\D\\Desktop\\banche1\\'
-for name in os.listdir(new_path):
-    df = pd.read_csv(new_path + name, encoding='gbk')
-    Dic = find_path(df, name)
-    info = pd.DataFrame(Dic)
-    info['id'] = name[0:-4]
-    info = info[
-        ['id', 'date', 'start_index', 'end_index', 'start_time', 'start_lid', 'end_time', 'end_lid', 'caoyang']]
-    info.to_csv('F:\\info\\{}.csv'.format(name), index=False)
+with open('C:\\Users\\D\\Desktop\\log.txt', 'w') as f:
+    new_path = 'C:\\Users\\D\\Desktop\\banche1\\'
+    for name in os.listdir(new_path):
+        df = pd.read_csv(new_path + name, encoding='gbk')
+        Dic, log = find_path(df, name)
+        info = pd.DataFrame(Dic)
+        info['id'] = name[0:-4]
+        info = info[
+            ['id', 'date', 'start_index', 'end_index', 'start_time', 'start_lid', 'end_time', 'end_lid', 'caoyang']]
+        info.to_csv('F:\\info\\{}.csv'.format(name), index=False)
+        f.write(log)
